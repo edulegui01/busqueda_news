@@ -6,6 +6,8 @@ public class News {
     private String enlaceFoto;
     private String titulo;
     private String resumen;
+    private String contenidoFoto;
+    private String contentTypeFoto;
 
     // Constructores, getters y setters
 
@@ -19,6 +21,22 @@ public class News {
 
     public String getFecha() {
         return fecha;
+    }
+
+    public String getContenidoFoto() {
+        return contenidoFoto;
+    }
+
+    public void setContenidoFoto(String contenidoFoto) {
+        this.contenidoFoto = contenidoFoto;
+    }
+
+    public String getContentTypeFoto() {
+        return contentTypeFoto;
+    }
+
+    public void setContentTypeFoto(String contentTypeFoto) {
+        this.contentTypeFoto = contentTypeFoto;
     }
 
     public void setFecha(String fecha) {

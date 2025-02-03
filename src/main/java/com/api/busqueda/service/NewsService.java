@@ -7,9 +7,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import org.springframework.stereotype.Service;
+import java.util.Base64;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +21,7 @@ import java.util.List;
 @Service
 public class NewsService {
 
-    public List<News> searchNews(String query) throws Exception {
+    public List<News> searchNews(String query,boolean f) throws Exception {
         List<News> newsList = new ArrayList<>();
         String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
         String url = "https://www.ultimahora.com/buscador?q=" + encodedQuery + "&s=0";
@@ -48,9 +51,24 @@ public class NewsService {
 
 
             News news = new News(fecha, enlace, enlaceFoto, titulo, resumen);
+
+            if (f) {
+                String base64Foto = getImageBase64(enlaceFoto);
+                String contentTypeFoto = "image/jpeg"; // O lo que corresponda según la imagen
+                news.setContenidoFoto(base64Foto);
+                news.setContentTypeFoto(contentTypeFoto);
+            }
+
             newsList.add(news);
         }
 
         return newsList;
+    }
+
+
+    private String getImageBase64(String imageUrl) throws IOException {
+        URL url = new URL(imageUrl);
+        byte[] imageBytes = url.openStream().readAllBytes();
+        return Base64.getEncoder().encodeToString(imageBytes);
     }
 }

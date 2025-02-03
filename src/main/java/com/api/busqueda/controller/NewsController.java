@@ -20,14 +20,14 @@ public class NewsController {
     private NewsService newsService;
 
     @GetMapping("/consulta")
-    public ResponseEntity<?> getNews(@RequestParam(value = "q", required = false) String query) {
+    public ResponseEntity<?> getNews(@RequestParam(value = "q", required = false) String query, @RequestParam(value = "f", defaultValue = "false") boolean f) {
         if (query == null || query.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ErrorResponse("g268", "Parámetros inválidos"));
         }
 
         try {
-            List<News> newsList = newsService.searchNews(query);
+            List<News> newsList = newsService.searchNews(query,f);
             if (newsList == null || newsList.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(new ErrorResponse("g267", "No se encuentran noticias para el texto: " + query));
